@@ -89,15 +89,15 @@ def parseMessageAndExecute(message, FBdriver, YoutubeDriver):
 		YoutubeDriver.get(link)
 
 def displayUsage():
-	print '\n\n\t\t=== SETUP COMPLETE ===\n'
-	print '\tUsage:\n'
-	print '\t\tplay <search term> : Returns top 5 videos from YouTube, waits for an integer response to play video'
-	print '\t\tplay-now <search term> : Plays first video from search results (I\'m feeling lucky)'
-	print '\t\tseek-to <time in seconds> : Seeks to the said time'
-	print '\t\tpause : Pauses the video'
-	print '\t\tunpause : Unpauses the video'
-	print '\t\tmute : Mutes the video'
-	print '\t\tunmute : Unmutes the video\n\n'
+	print '\n>>> SETUP COMPLETE\n'
+	print ' Usage:\n'
+	print '  play <search term> : Returns top 5 videos from YouTube, waits for an integer response to play video'
+	print '  play-now <search term> : Plays first video from search results (I\'m feeling lucky)'
+	print '  seek-to <time in seconds> : Seeks to the said time'
+	print '  pause : Pauses the video'
+	print '  unpause : Unpauses the video'
+	print '  mute : Mutes the video'
+	print '  unmute : Unmutes the video\n\n'
 
 def readMessages(FBdriver, YoutubeDriver):
 	previous_message_state = FBdriver.find_elements_by_class_name('null')
