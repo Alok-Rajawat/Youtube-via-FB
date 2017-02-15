@@ -14,6 +14,7 @@ def moveToMessages(FBdriver):
 	re_search = re.search(r'(\?id=\d+)$', profile_url)
 	
 	FB_ID = ''
+
 	if re_search:
 		# Profiles with no username
 		FB_ID = re_search.group(0)
@@ -23,13 +24,15 @@ def moveToMessages(FBdriver):
 		FB_ID = profile_url[profile_url.rfind('/')+1:]
 	print FB_ID
 
-	FBdriver.get('https://www.facebook.com/messages/'+FB_ID)
+	FBdriver.get('https://www.facebook.com/messages/t/'+FB_ID)
 
+'''
 	global reply_button
 	reply_button = [x for x in FBdriver.find_elements_by_tag_name('input') if x.get_attribute('value') == 'Reply'][0]
 
 	if not(reply_button.is_displayed()):
 		FBdriver.find_element_by_css_selector('._1s0').click()
+                '''
 
 def parseMessageAndExecute(message, FBdriver, YoutubeDriver):
 	split_message = message.split()
@@ -100,10 +103,10 @@ def displayUsage():
 	print '  unmute : Unmutes the video\n\n'
 
 def readMessages(FBdriver, YoutubeDriver):
-	previous_message_state = FBdriver.find_elements_by_class_name('null')
+	previous_message_state = FBdriver.find_elements_by_css_selector('span._3oh-._58nk')
 	while True:
 		FBdriver.implicitly_wait(5)
-		current_message_state = FBdriver.find_elements_by_class_name('null')
+		current_message_state = FBdriver.find_elements_by_css_selector('span._3oh-._58nk')
 		if not current_message_state == previous_message_state:
 			latest_message = current_message_state[-1].text
 			print latest_message
@@ -112,8 +115,8 @@ def readMessages(FBdriver, YoutubeDriver):
 		time.sleep(0.1)
 
 if __name__ == '__main__':
-	email = 'abdulfatir@outlook.com'
-	password = 'Seriously, bro?'
+	email = 'user@domain'
+	password = 'user_password'
 
 	FBdriver = webdriver.Chrome()
 	YoutubeDriver = webdriver.Chrome()
