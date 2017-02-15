@@ -1,6 +1,8 @@
 import re
+from pprint import pprint
 import time
 from selenium import webdriver
+
 
 def loginToFB(FBdriver, email, password):
 	email_field = FBdriver.find_element_by_id('email')
@@ -26,22 +28,32 @@ def moveToMessages(FBdriver):
 
 	FBdriver.get('https://www.facebook.com/messages/t/'+FB_ID)
 
-'''
-	global reply_button
-	reply_button = [x for x in FBdriver.find_elements_by_tag_name('input') if x.get_attribute('value') == 'Reply'][0]
+	#reply_button = find_element_by_css_selector('em._4qba') 
 
+'''
 	if not(reply_button.is_displayed()):
 		FBdriver.find_element_by_css_selector('._1s0').click()
                 '''
 
 def parseMessageAndExecute(message, FBdriver, YoutubeDriver):
+
+        '''
+        making the message input lowercase allows for a better user experice 
+        on mobile devices with auto caps enabled
+        '''
+
+        message = message.lower() 
+
 	split_message = message.split()
+
 	if re.search(r'^(play\s)', message):
 		search_term = ' '.join(split_message[1:])
 		search_box = YoutubeDriver.find_element_by_name('search_query')
 		search_box.send_keys(search_term)
 		search_box.submit()
 		results = YoutubeDriver.find_elements_by_class_name('item-section')[0].find_elements_by_class_name('yt-lockup-title')
+
+                pprint (results)
 
 		number_of_results = 5
 
@@ -56,22 +68,25 @@ def parseMessageAndExecute(message, FBdriver, YoutubeDriver):
 			search_result_output = (str(k)+'. '+title+'\n\n')
 			num_key_map.append(title)
 			FBdriver.find_element_by_css_selector('.uiTextareaNoResize.uiTextareaAutogrow._1rv').send_keys(search_result_output)
-			reply_button.click()
+			find_element_by_css_selector('em._4qba').click()
 			k+=1
 
 		FBdriver.implicitly_wait(10)
 		time.sleep(1)
 
-		previous_message_state = FBdriver.find_elements_by_class_name('null')
+	        previous_message_state = FBdriver.find_elements_by_css_selector('span._3oh-._58nk')
+
 		while True:
 			FBdriver.implicitly_wait(5)
-			current_message_state = FBdriver.find_elements_by_class_name('null')
+	                previous_message_state = FBdriver.find_elements_by_css_selector('span._3oh-._58nk')
 			if not current_message_state == previous_message_state:
 				latest_message = current_message_state[-1].text.encode('ascii','ignore')
 				link = title_link_map[num_key_map[int(latest_message)-1]]
 				YoutubeDriver.get(link)
 				break
+
 			time.sleep(0.1)
+
 	elif re.search(r'^(pause)$', message.strip()):
 		YoutubeDriver.execute_script("document.getElementById('movie_player').pauseVideo();")
 	elif re.search(r'^(unpause)$', message.strip()):
@@ -127,3 +142,4 @@ if __name__ == '__main__':
 	moveToMessages(FBdriver)
 	displayUsage()
 	readMessages(FBdriver, YoutubeDriver)
+
