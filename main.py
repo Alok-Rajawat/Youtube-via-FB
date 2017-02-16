@@ -1,6 +1,7 @@
 import re
-from pprint import pprint
 import time
+from pprint import pprint
+from selenium.webdriver.common.action_chains import ActionChains
 from selenium import webdriver
 
 
@@ -28,12 +29,6 @@ def moveToMessages(FBdriver):
 
 	FBdriver.get('https://www.facebook.com/messages/t/'+FB_ID)
 
-	#reply_button = find_element_by_css_selector('em._4qba') 
-
-'''
-	if not(reply_button.is_displayed()):
-		FBdriver.find_element_by_css_selector('._1s0').click()
-                '''
 
 def parseMessageAndExecute(message, FBdriver, YoutubeDriver):
 
@@ -53,23 +48,30 @@ def parseMessageAndExecute(message, FBdriver, YoutubeDriver):
 		search_box.submit()
 		results = YoutubeDriver.find_elements_by_class_name('item-section')[0].find_elements_by_class_name('yt-lockup-title')
 
-                pprint (results)
-
 		number_of_results = 5
 
 		title_link_map = {}
 		for result in results[:number_of_results]:
 			anchor_tag = result.find_elements_by_tag_name('a')[0]
 			title_link_map[anchor_tag.text.encode('ascii','ignore')] = anchor_tag.get_attribute('href').encode('ascii','ignore')
+
 		search_result_output = ''
 		k=1
+
 		num_key_map = []
-		for title in title_link_map.keys():
-			search_result_output = (str(k)+'. '+title+'\n\n')
-			num_key_map.append(title)
-			FBdriver.find_element_by_css_selector('.uiTextareaNoResize.uiTextareaAutogrow._1rv').send_keys(search_result_output)
-			find_element_by_css_selector('em._4qba').click()
-			k+=1
+
+                for title in title_link_map.keys():
+                        search_result_output = (str(k)+'. '+title+'\n\n')
+                        num_key_map.append(title)
+
+                        print search_result_output
+
+                        #sending user search results
+                        actions = ActionChains(FBdriver)
+                        actions.send_keys(search_result_output)
+                        actions.perform()
+
+                        k+=1
 
 		FBdriver.implicitly_wait(10)
 		time.sleep(1)
@@ -77,8 +79,11 @@ def parseMessageAndExecute(message, FBdriver, YoutubeDriver):
 	        previous_message_state = FBdriver.find_elements_by_css_selector('span._3oh-._58nk')
 
 		while True:
+
 			FBdriver.implicitly_wait(5)
-	                previous_message_state = FBdriver.find_elements_by_css_selector('span._3oh-._58nk')
+
+	                current_message_state = FBdriver.find_elements_by_css_selector('span._3oh-._58nk')
+
 			if not current_message_state == previous_message_state:
 				latest_message = current_message_state[-1].text.encode('ascii','ignore')
 				link = title_link_map[num_key_map[int(latest_message)-1]]
@@ -104,7 +109,7 @@ def parseMessageAndExecute(message, FBdriver, YoutubeDriver):
 		search_box.send_keys(search_term)
 		search_box.submit()
 		link = YoutubeDriver.find_elements_by_class_name('item-section')[0].find_elements_by_class_name('yt-lockup-title')[0].find_elements_by_tag_name('a')[0].get_attribute('href')
-		YoutubeDriver.get(link)
+                YoutubeDriver.get(link) 
 
 def displayUsage():
 	print '\n>>> SETUP COMPLETE\n'
@@ -131,7 +136,7 @@ def readMessages(FBdriver, YoutubeDriver):
 
 if __name__ == '__main__':
 	email = 'user@domain'
-	password = 'user_password'
+        password = 'user_password'
 
 	FBdriver = webdriver.Chrome()
 	YoutubeDriver = webdriver.Chrome()
