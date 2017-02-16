@@ -9,6 +9,15 @@ A tool to control YouTube using Facebook messenger. Run the script and once set 
 
 ### Usage  
 
+##Running The Program:
+
+python2 main.py -e user@domain -p Password
+
+-e EMAIL, --email EMAIL facebook / messenger login email
+
+-p PASSWORD, --password PASSWORD facebook / messenger login password
+                        
+
 * `play <search term>` : Returns top 5 videos from YouTube, waits for an integer response to play video
 *	`play-now <search term>` : Plays first video from search results (I'm feeling lucky)
 *	`seek-to <time in seconds>` : Seeks to the said time
