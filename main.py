@@ -1,5 +1,6 @@
 import re
 import time
+import argparse
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium import webdriver
 
@@ -133,9 +134,20 @@ def readMessages(FBdriver, YoutubeDriver):
 			previous_message_state = current_message_state
 		time.sleep(0.1)
 
+
+# required arguments
+
+parser = argparse.ArgumentParser(description='A tool to control YouTube using Facebook messenger')
+parser.add_argument('-e','--email', help='facebook / messenger login email', required=True)
+parser.add_argument('-p','--password', help='facebook / messenger login password', required=True)
+args = vars(parser.parse_args())
+
+
 if __name__ == '__main__':
-	email = 'user@domain'
-        password = 'user_password'
+	email = args ['email']
+        password = args ['password'] 
+
+        print 'Setting Up ... Please Wait'
 
 	FBdriver = webdriver.Chrome()
 	YoutubeDriver = webdriver.Chrome()
