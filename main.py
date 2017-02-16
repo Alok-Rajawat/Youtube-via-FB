@@ -1,6 +1,5 @@
 import re
 import time
-from pprint import pprint
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium import webdriver
 
