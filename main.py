@@ -25,7 +25,6 @@ def moveToMessages(FBdriver):
 	else:
 		# Profiles with username
 		FB_ID = profile_url[profile_url.rfind('/')+1:]
-	print FB_ID
 
 	FBdriver.get('https://www.facebook.com/messages/t/'+FB_ID)
 
@@ -63,8 +62,6 @@ def parseMessageAndExecute(message, FBdriver, YoutubeDriver):
                 for title in title_link_map.keys():
                         search_result_output = (str(k)+'. '+title+'\n\n')
                         num_key_map.append(title)
-
-                        print search_result_output
 
                         #sending user search results
                         actions = ActionChains(FBdriver)
@@ -112,15 +109,18 @@ def parseMessageAndExecute(message, FBdriver, YoutubeDriver):
                 YoutubeDriver.get(link) 
 
 def displayUsage():
-	print '\n>>> SETUP COMPLETE\n'
-	print ' Usage:\n'
-	print '  play <search term> : Returns top 5 videos from YouTube, waits for an integer response to play video'
-	print '  play-now <search term> : Plays first video from search results (I\'m feeling lucky)'
-	print '  seek-to <time in seconds> : Seeks to the said time'
-	print '  pause : Pauses the video'
-	print '  unpause : Unpauses the video'
-	print '  mute : Mutes the video'
-	print '  unmute : Unmutes the video\n\n'
+
+    print''' 
+    >>> SETUP COMPLETE
+    Usage:
+    play <search term> : Returns top 5 videos from YouTube, waits for an integer response to play video
+    play-now <search term> : Plays first video from search results (I\'m feeling lucky)
+    seek-to <time in seconds> : Seeks to the said time
+    pause : Pauses the video
+    unpause : Unpauses the video
+    mute : Mutes the video
+    unmute : Unmutes the video\n\n
+    '''
 
 def readMessages(FBdriver, YoutubeDriver):
 	previous_message_state = FBdriver.find_elements_by_css_selector('span._3oh-._58nk')
@@ -157,5 +157,6 @@ if __name__ == '__main__':
 	loginToFB(FBdriver, email, password)
 	moveToMessages(FBdriver)
 	displayUsage()
+        print 'message log:'
 	readMessages(FBdriver, YoutubeDriver)
 
