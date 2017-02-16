@@ -11,7 +11,7 @@ A tool to control YouTube using Facebook messenger. Run the script and once set 
 
 ###Running The Program:
 
-python2 main.py -e user@domain -p Password
+python2 main.py -e [user@domain] -p [password]
 
 -e EMAIL, --email EMAIL facebook / messenger login email
 
