@@ -4,12 +4,12 @@ For the lazy folks (of _IIT Roorkee_ and elsewhere) who listen to music on YouTu
 
 A tool to control YouTube using Facebook messenger. Run the script and once set up, just fire up Facebook chat or messenger on any of your devices and start chatting with yourself to control YouTube.  
   
-### Dependencies  
+## Dependencies  
 **selenium** - `pip install selenium`  
 
-### Usage  
+## Usage  
 
-##Running The Program:
+###Running The Program:
 
 python2 main.py -e user@domain -p Password
 
@@ -26,5 +26,5 @@ python2 main.py -e user@domain -p Password
 *	`mute` : Mutes the video
 *	`unmute` : Unmutes the video  
 
-#### Note
+### Note
 The tool is not idiot proof yet. Kindly fork and help in making it idiot proof.
